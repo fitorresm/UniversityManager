@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UniversityManager.Back.Persistence.Contracts
+namespace UniversityManager.Back.Persistence.Interfaces
 {
     public interface IManagerUniversityPersistence
     {
@@ -12,7 +12,7 @@ namespace UniversityManager.Back.Persistence.Contracts
         void Update<T>(T entity) where T : class;
         void Delete<T>(T entity) where T : class;
         void DeleteRange<T>(T[] entity) where T : class;
-        void Inactivate<T>(T entity) where T : class;
+
 
         Task<bool> SaveChangesAsync();
     }

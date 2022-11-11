@@ -1,19 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using UniversityManager.Back.Application.Models;
+using UniversityManager.Back.Application.Dtos;
 using UniversityManager.Back.Application.Services;
 
 namespace UniversityManager.Back.API.Controllers
 {
+
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class TeacherController : ControllerBase
+    public class SemestersController : ControllerBase
     {
         #region DependenceInjection
-        private readonly TeacherServices _teacherServices;
+        private readonly SemestersServices _semestersServices;
 
-        public TeacherController(TeacherServices teacherServices)
+        public SemestersController(SemestersServices semestersServices)
         {
-            _teacherServices = teacherServices;
+            _semestersServices = semestersServices;
         }
         #endregion
 
@@ -21,49 +22,77 @@ namespace UniversityManager.Back.API.Controllers
         [HttpGet]
 
         /// <summary>
-        /// Get All Teachers Cadaster with document
+        /// Get All Semesters Cadaster 
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public IActionResult GetAllTeachers()
+        public IActionResult GetAll()
         {
             try
             {
-                var responseReturn = _teacherServices.GetAllTeachers();
+                var responseReturn = _semestersServices.GetAll();
 
-                if (responseReturn == null) return NotFound("Não Foi Encontrado Nenhum Resultado");
+                if (responseReturn.Count == 0) return NotFound("Não Foi Encontrado Nenhum Resultado");
 
                 return Ok(responseReturn);
             }
             catch (Exception ex)
             {
 
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Falha {ex.Message}");                
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Falha {ex.Message}");
             }
 
         }
 
 
 
-        [HttpGet("{document}")]
-    
+        [HttpGet("{id}")]
+
         /// <summary>
-        /// Get Teachers Cadaster with document
+        /// Get Semesters Cadaster with id
         /// </summary>
         /// <param name="document">Document of Identity</param>
         /// <returns></returns>
-        public IActionResult GetTeacherByDocument(string document)
+        public IActionResult GetById(int id)
         {
-           
+
 
             try
             {
-                var responseReturn = _teacherServices.GetTeacherByDoc(document);
+                var responseReturn = _semestersServices.GetById(id);
 
                 if (responseReturn == null) return NotFound("Não Foi Encontrado Nenhum Resultado");
 
                 return Ok(responseReturn);
-                
+
+            }
+            catch (Exception ex)
+            {
+
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Falha {ex.Message}");
+            }
+
+        }
+
+        [HttpGet("{name}")]
+
+        /// <summary>
+        /// Get Semesters Cadaster with id
+        /// </summary>
+        /// <param name="name">Name Of Semester</param>
+        /// <returns></returns>
+        public IActionResult GetByName(string name)
+        {
+
+
+            try
+            {
+                var responseReturn = _semestersServices.GetByName(name);
+
+                if (responseReturn.Count == 0) return NotFound("Não Foi Encontrado Nenhum Resultado");
+
+                return Ok(responseReturn);
+
             }
             catch (Exception ex)
             {
@@ -76,16 +105,16 @@ namespace UniversityManager.Back.API.Controllers
         [HttpPut]
 
         /// <summary>
-        /// Cadaster Teacher
+        /// Cadaster Semester
         /// </summary>
-        /// <param name="">Model Teacher Dto</param>
+        /// <param name="">Model Semester Dto</param>
         /// <returns></returns>
-        public async Task<IActionResult> AddTeacher(TeacherDto model)
+        public async Task<IActionResult> AddSemesters(SemesterDto model)
         {
-           
+
             try
             {
-                var responseReturn = await _teacherServices.AddTeachers(model);
+                var responseReturn = await _semestersServices.AddSemester(model);
 
                 if (responseReturn == null) return BadRequest("Não Foi Possivel Adicionar!");
 
@@ -104,16 +133,16 @@ namespace UniversityManager.Back.API.Controllers
         [HttpPost]
 
         /// <summary>
-        /// Update Teacher
+        /// Update Semester
         /// </summary>
-        /// <param name="">Model Teacher Dto</param>
+        /// <param name="">Model Semester Dto</param>
         /// <returns></returns>
-        public async Task<IActionResult> UpdateTeacher(TeacherDto model)
+        public async Task<IActionResult> UpdateSemester(SemesterDto model)
         {
 
             try
             {
-                var responseReturn = await _teacherServices.UpdateTeacher(model.Id, model);
+                var responseReturn = await _semestersServices.UpdateSemester(model.Id, model);
 
                 if (responseReturn == null) return BadRequest("Não Foi Possivel Atualizar o Cadastro!");
 
@@ -129,18 +158,18 @@ namespace UniversityManager.Back.API.Controllers
         }
 
         [HttpDelete]
-  
+
         /// <summary>
-        /// Delete Teacher
+        /// Delete Semester
         /// </summary>
-        /// <param name="">Model Teacher Dto</param>
+        /// <param name="">Model Semester Dto</param>
         /// <returns></returns>
-        public async Task<IActionResult> InactivateTeacherById(int idTeacher)
+        public async Task<IActionResult> InactivateById(int idSemester)
         {
 
             try
             {
-                var responseReturn = await _teacherServices.InactivateTeacherById(idTeacher);
+                var responseReturn = await _semestersServices.InactivateById(idSemester);
 
                 if (responseReturn == null) return BadRequest("Não Foi Possivel Inativar o Cadastro!");
 
@@ -157,7 +186,5 @@ namespace UniversityManager.Back.API.Controllers
 
 
         #endregion
-
-
     }
 }

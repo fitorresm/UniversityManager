@@ -212,6 +212,7 @@ namespace UniversityManager.Back.Persistence.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Document = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BornDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     MobilePhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     HomePhone = table.Column<string>(type: "nvarchar(max)", nullable: true),

@@ -1,19 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using UniversityManager.Back.Application.Models;
+using UniversityManager.Back.Application.Dtos;
 using UniversityManager.Back.Application.Services;
 
 namespace UniversityManager.Back.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class TeacherController : ControllerBase
+    public class SubjectsController : ControllerBase
     {
         #region DependenceInjection
-        private readonly TeacherServices _teacherServices;
+        private readonly SubjectsServices _subjectsServices;
 
-        public TeacherController(TeacherServices teacherServices)
+        public SubjectsController(SubjectsServices subjectsServices)
         {
-            _teacherServices = teacherServices;
+            _subjectsServices = subjectsServices;
         }
         #endregion
 
@@ -21,49 +21,77 @@ namespace UniversityManager.Back.API.Controllers
         [HttpGet]
 
         /// <summary>
-        /// Get All Teachers Cadaster with document
+        /// Get All Subjects Cadaster 
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public IActionResult GetAllTeachers()
+        public IActionResult GetAll()
         {
             try
             {
-                var responseReturn = _teacherServices.GetAllTeachers();
+                var responseReturn = _subjectsServices.GetAll();
 
-                if (responseReturn == null) return NotFound("Não Foi Encontrado Nenhum Resultado");
+                if (responseReturn.Count == 0) return NotFound("Não Foi Encontrado Nenhum Resultado");
 
                 return Ok(responseReturn);
             }
             catch (Exception ex)
             {
 
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Falha {ex.Message}");                
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Falha {ex.Message}");
             }
 
         }
 
 
 
-        [HttpGet("{document}")]
-    
+        [HttpGet("{id}")]
+
         /// <summary>
-        /// Get Teachers Cadaster with document
+        /// Get Subjects Cadaster with id
         /// </summary>
         /// <param name="document">Document of Identity</param>
         /// <returns></returns>
-        public IActionResult GetTeacherByDocument(string document)
+        public IActionResult GetById(int id)
         {
-           
+
 
             try
             {
-                var responseReturn = _teacherServices.GetTeacherByDoc(document);
+                var responseReturn = _subjectsServices.GetById(id);
 
                 if (responseReturn == null) return NotFound("Não Foi Encontrado Nenhum Resultado");
 
                 return Ok(responseReturn);
-                
+
+            }
+            catch (Exception ex)
+            {
+
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Falha {ex.Message}");
+            }
+
+        }
+
+        [HttpGet("{name}")]
+
+        /// <summary>
+        /// Get Subjects Cadaster with id
+        /// </summary>
+        /// <param name="name">Name Of Subject</param>
+        /// <returns></returns>
+        public IActionResult GetByName(string name)
+        {
+
+
+            try
+            {
+                var responseReturn = _subjectsServices.GetByName(name);
+
+                if (responseReturn.Count == 0) return NotFound("Não Foi Encontrado Nenhum Resultado");
+
+                return Ok(responseReturn);
+
             }
             catch (Exception ex)
             {
@@ -76,16 +104,16 @@ namespace UniversityManager.Back.API.Controllers
         [HttpPut]
 
         /// <summary>
-        /// Cadaster Teacher
+        /// Cadaster Subject
         /// </summary>
-        /// <param name="">Model Teacher Dto</param>
+        /// <param name="">Model Subject Dto</param>
         /// <returns></returns>
-        public async Task<IActionResult> AddTeacher(TeacherDto model)
+        public async Task<IActionResult> AddSubjects(SubjectDto model)
         {
-           
+
             try
             {
-                var responseReturn = await _teacherServices.AddTeachers(model);
+                var responseReturn = await _subjectsServices.AddSubject(model);
 
                 if (responseReturn == null) return BadRequest("Não Foi Possivel Adicionar!");
 
@@ -104,16 +132,16 @@ namespace UniversityManager.Back.API.Controllers
         [HttpPost]
 
         /// <summary>
-        /// Update Teacher
+        /// Update Subject
         /// </summary>
-        /// <param name="">Model Teacher Dto</param>
+        /// <param name="">Model Subject Dto</param>
         /// <returns></returns>
-        public async Task<IActionResult> UpdateTeacher(TeacherDto model)
+        public async Task<IActionResult> UpdateSubject(SubjectDto model)
         {
 
             try
             {
-                var responseReturn = await _teacherServices.UpdateTeacher(model.Id, model);
+                var responseReturn = await _subjectsServices.UpdateSubject(model.Id, model);
 
                 if (responseReturn == null) return BadRequest("Não Foi Possivel Atualizar o Cadastro!");
 
@@ -129,18 +157,18 @@ namespace UniversityManager.Back.API.Controllers
         }
 
         [HttpDelete]
-  
+
         /// <summary>
-        /// Delete Teacher
+        /// Delete Subject
         /// </summary>
-        /// <param name="">Model Teacher Dto</param>
+        /// <param name="">Model Subject Dto</param>
         /// <returns></returns>
-        public async Task<IActionResult> InactivateTeacherById(int idTeacher)
+        public async Task<IActionResult> InactivateById(int idSubject)
         {
 
             try
             {
-                var responseReturn = await _teacherServices.InactivateTeacherById(idTeacher);
+                var responseReturn = await _subjectsServices.InactivateById(idSubject);
 
                 if (responseReturn == null) return BadRequest("Não Foi Possivel Inativar o Cadastro!");
 
@@ -157,7 +185,5 @@ namespace UniversityManager.Back.API.Controllers
 
 
         #endregion
-
-
     }
 }

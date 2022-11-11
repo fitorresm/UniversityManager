@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using UniversityManager.Back.Application.Dtos;
 using UniversityManager.Back.Application.Models;
 using UniversityManager.Back.Application.Services;
 
@@ -6,14 +7,14 @@ namespace UniversityManager.Back.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class TeacherController : ControllerBase
+    public class StudentController : ControllerBase
     {
         #region DependenceInjection
-        private readonly TeacherServices _teacherServices;
+        private readonly StudentsServices _studentServices;
 
-        public TeacherController(TeacherServices teacherServices)
+        public StudentController(StudentsServices studentServices)
         {
-            _teacherServices = teacherServices;
+            _studentServices = studentServices;
         }
         #endregion
 
@@ -21,15 +22,15 @@ namespace UniversityManager.Back.API.Controllers
         [HttpGet]
 
         /// <summary>
-        /// Get All Teachers Cadaster with document
+        /// Get All Students Cadaster with document
         /// </summary>
         /// <param name=""></param>
         /// <returns></returns>
-        public IActionResult GetAllTeachers()
+        public IActionResult GetAll()
         {
             try
             {
-                var responseReturn = _teacherServices.GetAllTeachers();
+                var responseReturn = _studentServices.GetAll();
 
                 if (responseReturn == null) return NotFound("Não Foi Encontrado Nenhum Resultado");
 
@@ -38,7 +39,7 @@ namespace UniversityManager.Back.API.Controllers
             catch (Exception ex)
             {
 
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Falha {ex.Message}");                
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Falha {ex.Message}");
             }
 
         }
@@ -46,24 +47,24 @@ namespace UniversityManager.Back.API.Controllers
 
 
         [HttpGet("{document}")]
-    
+
         /// <summary>
-        /// Get Teachers Cadaster with document
+        /// Get Students Cadaster with document
         /// </summary>
         /// <param name="document">Document of Identity</param>
         /// <returns></returns>
-        public IActionResult GetTeacherByDocument(string document)
+        public IActionResult GetByDocument(string document)
         {
-           
+
 
             try
             {
-                var responseReturn = _teacherServices.GetTeacherByDoc(document);
+                var responseReturn = _studentServices.GetByDoc(document);
 
                 if (responseReturn == null) return NotFound("Não Foi Encontrado Nenhum Resultado");
 
                 return Ok(responseReturn);
-                
+
             }
             catch (Exception ex)
             {
@@ -76,16 +77,16 @@ namespace UniversityManager.Back.API.Controllers
         [HttpPut]
 
         /// <summary>
-        /// Cadaster Teacher
+        /// Cadaster Student
         /// </summary>
-        /// <param name="">Model Teacher Dto</param>
+        /// <param name="">Model Student Dto</param>
         /// <returns></returns>
-        public async Task<IActionResult> AddTeacher(TeacherDto model)
+        public async Task<IActionResult> AddStudent(StudentDto model)
         {
-           
+
             try
             {
-                var responseReturn = await _teacherServices.AddTeachers(model);
+                var responseReturn = await _studentServices.AddStudents(model);
 
                 if (responseReturn == null) return BadRequest("Não Foi Possivel Adicionar!");
 
@@ -104,16 +105,16 @@ namespace UniversityManager.Back.API.Controllers
         [HttpPost]
 
         /// <summary>
-        /// Update Teacher
+        /// Update Student
         /// </summary>
-        /// <param name="">Model Teacher Dto</param>
+        /// <param name="">Model Student Dto</param>
         /// <returns></returns>
-        public async Task<IActionResult> UpdateTeacher(TeacherDto model)
+        public async Task<IActionResult> UpdateStudent(StudentDto model)
         {
 
             try
             {
-                var responseReturn = await _teacherServices.UpdateTeacher(model.Id, model);
+                var responseReturn = await _studentServices.UpdateStudent(model.Id, model);
 
                 if (responseReturn == null) return BadRequest("Não Foi Possivel Atualizar o Cadastro!");
 
@@ -129,18 +130,18 @@ namespace UniversityManager.Back.API.Controllers
         }
 
         [HttpDelete]
-  
+
         /// <summary>
-        /// Delete Teacher
+        /// Delete Student
         /// </summary>
-        /// <param name="">Model Teacher Dto</param>
+        /// <param name="">Model Student Dto</param>
         /// <returns></returns>
-        public async Task<IActionResult> InactivateTeacherById(int idTeacher)
+        public async Task<IActionResult> InactivateById(int idStudent)
         {
 
             try
             {
-                var responseReturn = await _teacherServices.InactivateTeacherById(idTeacher);
+                var responseReturn = await _studentServices.InactivateById(idStudent);
 
                 if (responseReturn == null) return BadRequest("Não Foi Possivel Inativar o Cadastro!");
 
@@ -157,7 +158,5 @@ namespace UniversityManager.Back.API.Controllers
 
 
         #endregion
-
-
     }
 }

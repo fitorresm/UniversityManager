@@ -1,11 +1,12 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace UniversityManager.Domain
+namespace UniversityManager.Back.Application.Models
 {
-    public class Student
+    public class TeacherDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -25,8 +26,6 @@ namespace UniversityManager.Domain
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }
-
-        public bool GraduationCompleted { get; set; }
 
         public bool Disabled { get; set; }
     }

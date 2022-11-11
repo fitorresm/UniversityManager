@@ -362,6 +362,9 @@ namespace UniversityManager.Back.Persistence.Migrations
                     b.Property<bool>("Disabled")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Document")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(max)");
 

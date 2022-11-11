@@ -12,7 +12,7 @@ using UniversityManager.Back.Persistence.Contexts;
 namespace UniversityManager.Back.Persistence.Migrations
 {
     [DbContext(typeof(UniversityManagerContext))]
-    [Migration("20221110172630_Initial")]
+    [Migration("20221110184810_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -364,6 +364,9 @@ namespace UniversityManager.Back.Persistence.Migrations
 
                     b.Property<bool>("Disabled")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Document")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmailAddress")
                         .HasColumnType("nvarchar(max)");
